@@ -194,4 +194,4 @@ The framework is designed to be modular and extensible:
 4. **Adding preprocessors**: Create a new preprocessor and register it in the preprocessor registry
 
 ## License
-[Free to use, update later]
+[MIT License]
