@@ -8,6 +8,9 @@ class MSE:
   """
   Mean Squared Error loss.
   """
+  def __init__(self, *args, **kwargs):
+    pass
+
   def __call__(self, *args, **kwargs):
     return nn.functional.mse_loss(*args, **kwargs)
 
@@ -16,6 +19,9 @@ class BinaryCrossEntropy:
   """
   Binary Cross Entropy loss.
   """
+  def __init__(self, *args, **kwargs):
+    pass
+
   def __call__(self, *args, **kwargs):
     return nn.functional.binary_cross_entropy(*args, **kwargs)
 
@@ -24,6 +30,9 @@ class BinaryCrossEntropyWithLogits:
   """
   Binary Cross Entropy with Logits loss.
   """
+  def __init__(self, *args, **kwargs):
+    pass
+
   def __call__(self, *args, **kwargs):
     return nn.functional.binary_cross_entropy_with_logits(*args, **kwargs)
   
@@ -32,5 +41,8 @@ class CrossEntropy:
   """
   Cross Entropy loss.
   """
+  def __init__(self, *args, **kwargs):
+    pass
+  
   def __call__(self, *args, **kwargs):
     return nn.functional.cross_entropy(*args, **kwargs)

@@ -8,7 +8,7 @@ experiment:
 # Model configuration
 model:
   name: ConvNeXtV2Tiny # Tiny, Pico, Nano, Base, Huge
-  loss_name: cross_entropy
+  loss_name: CrossEntropy
   lr: 0.0001
   device: cuda 
 

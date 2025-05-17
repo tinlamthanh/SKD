@@ -8,9 +8,9 @@ from typing import Dict, Any, Callable, Optional
 
 from .registry import DATASET_REGISTRY
 
-class ISIC2016Dataset(Dataset):
+class ISIC2018Dataset(Dataset):
   """
-  Dataset class for ISIC 2016 skin lesion dataset
+  Dataset class for ISIC 2018 skin lesion dataset
   """
   def __init__(self, csv_path: str, 
               img_dir: str, 
@@ -23,7 +23,7 @@ class ISIC2016Dataset(Dataset):
               **kwargs
               ):
     """
-    Initialize ISIC2016 dataset
+    Initialize ISIC2018 dataset
     
     Args:
       csv_path: Path to CSV file with dataset metadata
@@ -59,6 +59,22 @@ class ISIC2016Dataset(Dataset):
     """
     return len(self.df)
   
+  def get_label(self, idx):
+    label = [1, 0]
+    # handle if target_col contains multiple cols (multi-label case)
+    if isinstance(self.target_col, list):
+      for tc in self.target_col:
+        cur_label = self.df.iloc[idx][tc]
+        if cur_label > 0.:
+          label = [0, 1]
+          return label
+    elif isinstance(self.target_col, str):
+      label = [0, 1] if self.df.iloc[idx][self.target_col] > 0 else [0, 1]
+    else: 
+      raise Exception(f'Invalid target column. Please check config file.')
+
+    return label
+
   def __getitem__(self, idx: int) -> Dict[str, Any]:
     """
     Get dataset item
@@ -79,28 +95,26 @@ class ISIC2016Dataset(Dataset):
     # if self.transform:
     image = self.transform(image, self.is_train)
     
-    label = self.df.iloc[idx][self.target_col]
-    label = int(label == 'malignent') if isinstance(label, str) else int(label)
-    label = [1, 0] if label == 0 else [0, 1]
+    label = self.get_label(idx)
 
     return {'pixel_values': image, 'label': torch.tensor(label, dtype=torch.float)}
 
 @DATASET_REGISTRY.register()
-def load_isic2016(*args, **kwargs):
+def load_isic2018(*args, **kwargs):
   """
-  Load ISIC 2016 dataset
+  Load ISIC 2018 dataset
   
   Returns:
       Dict containing train and test datasets
   """
   dataset = {}
-  dataset['train'] = ISIC2016Dataset(csv_path=kwargs['train_csv_path'], 
+  dataset['train'] = ISIC2018Dataset(csv_path=kwargs['train_csv_path'], 
                                   img_dir=kwargs['train_img_dir'], 
                                   img_path_col=kwargs['train_img_col'],
                                   target_col=kwargs['train_target_col'],
                                   is_train=True,
                                   **kwargs)
-  dataset['test'] = ISIC2016Dataset(csv_path=kwargs['test_csv_path'], 
+  dataset['test'] = ISIC2018Dataset(csv_path=kwargs['test_csv_path'], 
                                   img_dir=kwargs['test_img_dir'], 
                                   img_path_col=kwargs['test_img_col'],
                                   target_col=kwargs['test_target_col'],

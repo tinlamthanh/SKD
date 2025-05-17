@@ -1,4 +1,3 @@
-from .loss import LossWrapper
 from .metrics import MetricsLogger
 from .data_loader import DataLoaderWrapper
 from .trainer import TrainerWrapper

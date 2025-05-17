@@ -17,7 +17,7 @@ class MetricsLogger:
     
     # Create metrics for each stage based on config
     for stage in self.stages:
-      self.metrics[stage] = self._create_metrics_for_stage(config, stage)
+      self.metrics[stage] = self._create_metrics_for_stage(config)
             
   def _create_metrics_for_stage(self, config):
     """
